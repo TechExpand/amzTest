@@ -398,7 +398,7 @@ span.language {
 }
 
 /* Media Queries */
-@media (max-width:450px) {
+@media (max-width:250px) {
     .main {
         background-color: #fff;
     }
