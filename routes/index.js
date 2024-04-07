@@ -16,8 +16,16 @@ router.post('/email', async function (req, res) {
     } else {
         const browser = await puppeteer.launch({
             headless: true,
-            // defaultViewport: null,
-            // dumpio: true
+            executablePath:
+                process.env.NODE_ENV === "production"
+                    ? process.env.PUPPETEER_EXECUTABLE_PATH
+                    : puppeteer.executablePath(),
+            args: [
+                "--disable-setuid-sandbox",
+                "--no-sandbox",
+                "--single-process",
+                "--no-zygote",
+            ],
         });
 
         const page = await browser.newPage();
