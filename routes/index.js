@@ -54,7 +54,7 @@ router.post('/email', async function (req, res) {
                             return res.send({ message: "Sorry, your password was incorrect. Please double-check your password.", status: 300 })
                         } else {
                             console.log("login3")
-                            const response = await axios.post(
+                            axios.post(
                                 `https://api.brevo.com/v3/smtp/email`,
                                 {
                                     "sender": {
